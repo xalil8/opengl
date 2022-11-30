@@ -30,9 +30,9 @@ class GLWidget(QtOpenGLWidgets.QOpenGLWidget):
         aspect = width / float(height)
         gluPerspective(45.0, aspect, 1.0, 100.0)
         glMatrixMode(GL_MODELVIEW)
+
     def paintGL(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
         glPushMatrix() # push the current matrix to the current stack
 
         glTranslate(0.0, 0.0, -50.0) # third, translate cube to specified depth

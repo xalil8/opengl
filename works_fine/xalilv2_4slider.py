@@ -39,19 +39,21 @@ class GLWidget(QtOpenGL.QGLWidget):
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
 
         gl.glPushMatrix() # push the current matrix to the current stack
-
+        gl.glColor3f(1, 0, 0)  #to make sinlge color 
         gl.glTranslate(0.0, 0.0, -50.0) # third, translate cube to specified depth
         gl.glScale(self.scale, self.scale, self.scale) # second, scale cube
         gl.glRotate(self.rotX, 1.0, 0.0, 0.0)
         gl.glRotate(self.rotY, 0.0, 1.0, 0.0)
         gl.glRotate(self.rotZ, 0.0, 0.0, 1.0)
         gl.glTranslate(-0.5, -0.5, -0.5) # first, translate cube center to origin
-
+        
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)
 
         gl.glVertexPointer(3, gl.GL_FLOAT, 0, self.vertVBO)
         gl.glColorPointer(3, gl.GL_FLOAT, 0, self.colorVBO)
+
+        gl.glColor3f(1, 0, 0)  #to make sinlge color 
 
         gl.glDrawElements(gl.GL_QUADS, len(self.cubeIdxArray), gl.GL_UNSIGNED_INT, self.cubeIdxArray)
 

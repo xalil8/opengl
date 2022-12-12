@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow):
         slider_scale.setValue(15)
         slider_scale.setTickPosition(QtWidgets.QSlider.TicksBelow)
 
-
+        
         move_label_x = QtWidgets.QLabel("X axis")
         move_label_x.setAlignment(QtCore.Qt.AlignLeft)
         move_label_x.setFixedSize(60, 20)
@@ -181,7 +181,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         gui_layout.addWidget(move_label_y)
         gui_layout.addWidget(move_y)
-        
+
         gui_layout.addWidget(move_label_z)
         gui_layout.addWidget(move_z)
 

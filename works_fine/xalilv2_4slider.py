@@ -52,9 +52,6 @@ class GLWidget(QtOpenGL.QGLWidget):
 
         gl.glVertexPointer(3, gl.GL_FLOAT, 0, self.vertVBO)
         gl.glColorPointer(3, gl.GL_FLOAT, 0, self.colorVBO)
-
-        gl.glColor3f(1, 0, 0)  #to make sinlge color 
-
         gl.glDrawElements(gl.GL_QUADS, len(self.cubeIdxArray), gl.GL_UNSIGNED_INT, self.cubeIdxArray)
 
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY)

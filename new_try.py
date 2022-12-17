@@ -21,14 +21,17 @@ class GLWidget(QtOpenGL.QGLWidget):
 
         self.initGeometry()
 
-        self.rotX = 0.0
-        self.rotY = 0.0
-        self.rotZ = 0.0
-        self.scale = 5.0
+        self.rot_x = 0.0
+        self.rot_y = 0.0
+        self.rot_z = 0.0
 
-        self.translateX = 0
-        self.translateY = 0 
-        self.translateZ = 0
+        self.scale_x = 5.0
+        self.scale_y = 5.0
+        self.scale_z = 5.0
+
+        self.translate_x = 0
+        self.translate_y = 0 
+        self.translate_z = 0
 
     def resizeGL(self, width, height):
 
@@ -46,12 +49,12 @@ class GLWidget(QtOpenGL.QGLWidget):
         gl.glPushMatrix() # push the current matrix to the current stack
         #gl.glColor3f(1, 0, 0)  #to make sinlge color 
         gl.glTranslate(0.0, 0.0, -50.0) # third, translate cube to specified depth
-        gl.glScale(self.scale, self.scale, self.scale) # second, scale cube
-        gl.glRotate(self.rotX, 1.0, 0.0, 0.0)
-        gl.glRotate(self.rotY, 0.0, 1.0, 0.0)
-        gl.glRotate(self.rotZ, 0.0, 0.0, 1.0)
+        gl.glScale(self.scale_x, self.scale_y, self.scale_z) # second, scale cube
+        gl.glRotate(self.rot_x, 1.0, 0.0, 0.0)
+        gl.glRotate(self.rot_y, 0.0, 1.0, 0.0)
+        gl.glRotate(self.rot_z, 0.0, 0.0, 1.0)
 
-        gl.glTranslate(self.translateX, self.translateY, self.translateZ) # first, translate cube center to origin
+        gl.glTranslate(self.translate_x, self.translate_y, self.translate_z) # first, translate cube center to origin
 
 
         #gl.glTranslate(0.2,0.2,0.2)
@@ -101,35 +104,46 @@ class GLWidget(QtOpenGL.QGLWidget):
         0, 3, 7, 4,
         7, 6, 5, 4 ])
 
-    def setRotX(self, val):
-        self.rotX = np.pi * val*2
+    #rotation functions that take values from line edit 
+    def set_rotation_x(self, val):
+        self.rot_x = val
 
-    def setRotY(self, val):
-        self.rotY = np.pi * val*2
+    def set_rotation_y(self, val):
+        self.rot_y = val
 
-    def setRotZ(self, val):
-        self.rotZ = np.pi * val*2
+    def set_rotation_z(self, val):
+        self.rot_z = val
 
-    def set_scale(self,val):
-        self.scale = val
-    
+    #translation functions that take values from line edit 
+
     def set_translation_x(self,x):
-        self.translateX = x* 0.1
+        self.translate_x = x*0.2
 
     def set_translation_y(self,y):
-        self.translateY = y* 0.1
+        self.translate_y = y*0.2
 
     def set_translation_z(self,z):
-        self.translateZ = z * 0.1
+        self.translate_z = z *0.2
 
-    def reset_translation(self):
-        self.translateX= 0
-        self.translateY = 0 
-        self.translateZ = 0
-        self.rotX = 0.0
-        self.rotY = 0.0
-        self.rotZ = 0.0
-        self.scale = 5.0
+    def set_scale_x(self,val):
+        self.scale_x = val
+    
+    def set_scale_y(self,val):
+        self.scale_y = val
+
+    def set_scale_z(self,val):
+        self.scale_z = val
+
+    def reset_All(self):
+        self.translate_x= 0
+        self.translate_y = 0 
+        self.translate_z = 0
+        self.rot_x = 0.0
+        self.rot_y = 0.0
+        self.rot_z = 0.0
+        self.scale_x = 5.0
+        self.scale_y = 5.0
+        self.scale_z = 5.0
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -155,6 +169,10 @@ class MainWindow(QtWidgets.QMainWindow):
         gui_layout.addWidget(self.glWidget)
 
     #####################################################################
+
+        checkbox = QtWidgets.QCheckBox("Keep Scale\nRatio")
+        #checkbox.setChecked(False)
+
     #####################################################################
         #translation variables
         label_width = 70
@@ -185,16 +203,19 @@ class MainWindow(QtWidgets.QMainWindow):
         rotation_label_x.setFixedSize(label_width, 20)
         self.rotation_x = QtWidgets.QLineEdit()
         self.rotation_x.setFixedSize(label_with_text, 20)
+        self.rotation_x.setText("0.0")
 
         rotation_label_y = QtWidgets.QLabel("Y")
         rotation_label_y.setFixedSize(label_width, 20)
         self.rotation_y = QtWidgets.QLineEdit()
         self.rotation_y.setFixedSize(label_with_text, 20)
+        self.rotation_y.setText("0.0")
 
         rotation_label_z = QtWidgets.QLabel("Z")
         rotation_label_z.setFixedSize(label_width, 20)
         self.rotation_z = QtWidgets.QLineEdit()
         self.rotation_z.setFixedSize(label_width, 20)
+        self.rotation_z.setText("0.0")
 
         rotation_push_but = QtWidgets.QPushButton("Rotation", self)
         rotation_push_but.setFixedSize(70, 25)
@@ -204,19 +225,22 @@ class MainWindow(QtWidgets.QMainWindow):
         scale_label_x.setFixedSize(label_width, 20)
         self.scale_x = QtWidgets.QLineEdit()
         self.scale_x.setFixedSize(label_with_text, 20)
+        self.scale_x.setText("5.0")
 
         scale_label_y = QtWidgets.QLabel("Y")
         scale_label_y.setFixedSize(label_width, 20)
         self.scale_y = QtWidgets.QLineEdit()
         self.scale_y.setFixedSize(label_with_text, 20)
+        self.scale_y.setText("5.0")
 
         scale_label_z = QtWidgets.QLabel("Z")
         scale_label_z.setFixedSize(label_width, 20)
         self.scale_z = QtWidgets.QLineEdit()
         self.scale_z.setFixedSize(label_width, 20)
+        self.scale_z.setText("5.0")
 
-        self.scale_push_but = QtWidgets.QPushButton("Scale", self)
-        self.scale_push_but.setFixedSize(70, 25)
+        scale_push_but = QtWidgets.QPushButton("Scale", self)
+        scale_push_but.setFixedSize(70, 25)
     #####################################################################
     #####################################################################
         radio_width = 50
@@ -265,6 +289,12 @@ class MainWindow(QtWidgets.QMainWindow):
         hbox2.addWidget(rotation_label_z)
         hbox2.addWidget(rotation_push_but)
     #####################################################################
+
+       
+        scale_box = QtWidgets.QVBoxLayout()
+        scale_box.addWidget(checkbox)
+        scale_box.addWidget(scale_push_but)
+
         hbox3 = QtWidgets.QHBoxLayout()
         hbox3.addWidget(self.scale_x)
         hbox3.addWidget(scale_label_x)
@@ -272,7 +302,7 @@ class MainWindow(QtWidgets.QMainWindow):
         hbox3.addWidget(scale_label_y)
         hbox3.addWidget(self.scale_z)
         hbox3.addWidget(scale_label_z)
-        hbox3.addWidget(self.scale_push_but)         
+        hbox3.addLayout(scale_box)
     #####################################################################
         hbox4 = QtWidgets.QHBoxLayout()
         hbox4.addWidget(self.mirror_x)
@@ -294,6 +324,7 @@ class MainWindow(QtWidgets.QMainWindow):
         radio_reset = QtWidgets.QHBoxLayout()
         radio_gui.setAlignment(QtCore.Qt.AlignLeft)
         radio_reset.addLayout(radio_gui)
+
         radio_reset.addWidget(reset_button)
 
     #####################################################################
@@ -307,7 +338,20 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.glWidget.set_translation(x=self.move_val_x.text(),y=self.move_val_y.text(),z=self.move_val_z.text())
 
 
-        def this_func_work():
+        def reset_line_edits():
+            self.translation_x.setText("0.0")
+            self.translation_y.setText("0.0")
+            self.translation_z.setText("0.0")
+
+            self.rotation_x.setText("0.0")
+            self.rotation_y.setText("0.0")
+            self.rotation_z.setText("0.0")
+
+            self.scale_x.setText("5.0")
+            self.scale_y.setText("5.0")
+            self.scale_z.setText("5.0")
+
+        def func_translation():
             x = self.translation_x.text()
             y = self.translation_y.text()
             z = self.translation_z.text()
@@ -329,10 +373,121 @@ class MainWindow(QtWidgets.QMainWindow):
             self.glWidget.set_translation_y(y)
             self.glWidget.set_translation_z(z)
 
-        translation_push_but.clicked.connect(this_func_work)
-        reset_button.clicked.connect(self.glWidget.reset_translation)
+        def func_rotation():
+            x = self.rotation_x.text()
+            y = self.rotation_y.text()
+            z = self.rotation_z.text()
+
+            try:
+                x = float(x)
+            except ValueError:
+                x = 0
+            try:
+                y = float(y)
+            except ValueError:
+                y = 0
+            try:
+                z = float(z)
+            except ValueError:
+                z = 0
+                
+            self.glWidget.set_rotation_x(x)
+            self.glWidget.set_rotation_y(y)
+            self.glWidget.set_rotation_z(z)
+
+        def func_scale():
+            x = self.scale_x.text()
+            y = self.scale_y.text()
+            z = self.scale_z.text()
+
+            try:
+                x = float(x)
+            except ValueError:
+                x = 0
+            try:
+                y = float(y)
+            except ValueError:
+                y = 0
+            try:
+                z = float(z)
+            except ValueError:
+                z = 0
 
 
+
+            if checkbox.isChecked() == True:
+                print("checked")
+                self.scale_y
+                avg_scaling = (x + y + z)/3
+
+                self.glWidget.scale_x = avg_scaling
+                self.glWidget.scale_y = avg_scaling
+                self.glWidget.scale_z = avg_scaling
+
+            else:    
+                self.glWidget.set_scale_x(x)
+                self.glWidget.set_scale_y(y)
+                self.glWidget.set_scale_z(z)
+
+
+    #TODO: complete this ffunction 
+        def func_mirror():
+            if self.mirror_x.isChecked():
+                x = self.translation_x.text()
+                try:
+                    x = float(x)
+                    
+                    if x == 0:
+                        x = 5 
+                        self.glWidget.set_translation_x(-x)
+                        
+                    else:
+                        self.glWidget.set_translation_x(-x)
+
+                except ValueError:
+                    pass
+
+
+            elif self.mirror_y.isChecked():
+                y = self.translation_y.text()
+                try:
+                    y = float(y)
+                    
+                    if y == 0:
+                        y = 5 
+                        self.glWidget.set_translation_y(-y)
+                        
+                    else:
+                        self.glWidget.set_translation_y(-y)
+
+                except ValueError:
+                    pass
+
+            elif self.mirror_z.isChecked():
+                z = self.translation_z.text()
+                try:
+                    z = float(z)
+                    
+                    if z == 0:
+                        z = 5 
+                        self.glWidget.set_translation_z(-z)
+                        
+                    else:
+                        self.glWidget.set_translation_z(-z)
+
+                except ValueError:
+                    pass
+
+        self.mirror_push_but.clicked.connect(func_mirror)
+        translation_push_but.clicked.connect(func_translation)
+        rotation_push_but.clicked.connect(func_rotation)
+        scale_push_but.clicked.connect(func_scale)
+        
+        reset_button.clicked.connect(self.glWidget.reset_All)
+        reset_button.clicked.connect(reset_line_edits)
+
+
+        
 
 if __name__ == '__main__':
 
